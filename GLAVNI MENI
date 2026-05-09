@@ -1,0 +1,169 @@
+package aplikacija;
+import funkcionalnosti.*;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import izuzeci.LoginException;
+import korisnici.Organizator;
+import java.util.Scanner;
+
+
+public class Platforma {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		KorisnikFunkcije kf = new KorisnikFunkcije();
+		DogadjajFunkcije df = new DogadjajFunkcije();
+		KorisnikDatoteka kd = new KorisnikDatoteka();
+		kf.stampaj();
+		df.stampajDogadjaje();
+		while (true) {
+			System.out.println("==========TRAVEL AGENCY==========");
+			System.out.println("-----Dobrodosli-----");
+			System.out.println("Vi ste?");
+			System.out.println("=> Clan");
+			System.out.println("=> Organizator");
+			System.out.println("=> Validator");
+			System.out.println("=> Izlaz iz aplikacije");
+			System.out.print("--> Unesite jednu od navedenih opcija: ");
+		
+			String izbor = sc.nextLine();
+		
+			if (izbor.equalsIgnoreCase("Clan")){
+				System.out.println("=====CLAN=====");
+				System.out.println("1. Registracija (ukoliko nemate nalog)");
+				System.out.println("2. Prijava (imate nalog? Prijavite se!)");
+				System.out.println("3. Napustite aplikaciju.");
+			
+				System.out.print("Odaberite opciju unosom rednog broja: ");
+				int opcija = sc.nextInt();
+				sc.nextLine();
+			
+				if (opcija == 1) {
+					System.out.print("Unesite ime: ");
+					String korisnickoIme = sc.nextLine();
+					System.out.print("Unesite lozinku: ");
+					String lozinka = sc.nextLine();
+					System.out.print("Unesite broj telefona: ");
+					int brojTelefona = sc.nextInt();
+					sc.nextLine();
+					//System.out.println("Novcana sredstva: 0");
+				
+					kf.registracija(korisnickoIme,lozinka,brojTelefona);
+				} else if (opcija == 2) {
+					System.out.println("=====PRIJAVA=====");
+					kf.loginForma(sc);
+					if (kf.getUlogovanKorisnik() != null) {
+						System.out.println("------------------------------");
+						System.out.println("Odaberite opciju unosom rednog broja: ");
+						System.out.println("1.Kupovina karte");
+						System.out.println("2.Pretraga aktivnih dogadjaja");
+						System.out.println("3.Prikaz kupljenih karata");
+						System.out.println("4.Odjavite se.");
+					
+						int izbor2 = sc.nextInt();
+						sc.nextLine();
+						
+						if (izbor2 == 1) {
+							System.out.println("Kupovina karte je u izradi...");
+						} else if (izbor2 == 2) {
+							System.out.println("Pretraga aktivnih dogadjaja je u izradi...");
+						} else if(izbor2 == 3) {
+							System.out.println("Prikaz kupljenih karata je u izradi...");
+						} else if (izbor2 == 4) {
+							kf.odjava();
+						}
+					}
+					
+				} else if (opcija == 3) {
+					System.out.println("Napustili ste aplikaciju.");
+					break;
+				} 
+			} else if (izbor.equalsIgnoreCase("Organizator")) {
+				System.out.println("=====ORGANIZATOR=====");
+				System.out.println("==> Prijavite se na vas nalog:");
+				kf.loginForma(sc);
+				if (kf.getUlogovanKorisnik() != null){
+					System.out.println("--Vase funkcionalnosti--");
+					System.out.println("1. Kreiraj dogadjaj");
+					System.out.println("2. Pretraga aktivnih dogadjaja");
+					System.out.println("3. Prikaz aktiviranih karata");
+					System.out.println("4. Odjavite se.");
+					
+					System.out.print("Odaberite opciju unosom rednog broja: ");
+					int opcija = sc.nextInt();
+					sc.nextLine();
+					
+					if (opcija == 1) {
+						System.out.println("Kreiraj dogadjaj je u izradi...");
+						System.out.print("Unesite naziv dogadjaja: ");
+						String naziv = sc.nextLine();
+						System.out.print("Unesite datum pocetka (yyyy-MM-dd): ");
+						String unos = sc.nextLine();
+						LocalDate datumPocetka = LocalDate.parse(unos);
+						System.out.print("Unesite datum kraja: ");
+						String unos2 = sc.nextLine();
+						LocalDate datumKraja = LocalDate.parse(unos2);
+						System.out.print("Unesite sadrzaj: ");
+						String sadrzaj = sc.nextLine();
+						System.out.println("Unesite mjesto: ");
+						String mjesto = sc.nextLine();
+						Organizator o = (Organizator) kf.getUlogovanKorisnik();
+						df.kreirajDogadjaj(o,naziv, datumPocetka, datumKraja, sadrzaj, mjesto);
+						try {
+							kd.upisiUFajl(o);
+ 						} catch (Exception e) {
+ 							System.out.println("Greska pri upisu u fajl.");
+ 						}
+						//df.stampajDogadjaje();
+						System.out.println("Dogadjaj je kreiran!");
+						try {
+						System.out.println(kd.ucitajIzFajla());
+						} catch(IOException e) {
+							System.out.println("Greska pri ucitavanju iz fajla!");
+						}
+					} else if (opcija == 2) {
+						System.out.println("Pretraga aktivnih dogadjaja je u izradi...");
+					} else if (opcija == 3) {
+						System.out.println("Prikaz aktiviranih karata je u izradi...");
+					} else if (opcija == 4) {
+						kf.odjava();
+					}
+				}
+			} else if (izbor.equalsIgnoreCase("Validator")) {
+				System.out.println("=====VALIDATOR=====");
+				System.out.println("==> Prijavite se na vas nalog:");
+				kf.loginForma(sc);
+				if (kf.getUlogovanKorisnik() != null) {
+					System.out.println("--Vase funkcionalnosti--");
+					System.out.println("1.Validacija (karte)");
+					System.out.println("2.Aktivacija (karte)");
+					System.out.println("3.Pretraga aktivnih dogadjaja");
+					System.out.println("4.Prikaz kupljenih karata");
+					System.out.println("5.Odjavite se.");
+					
+					System.out.print("Odaberite opciju unosom rednog broja: ");
+					int opcija = sc.nextInt();
+					sc.nextLine();
+					
+					if (opcija == 1) {
+						System.out.println("Validacija u izradi...");
+					} else if (opcija == 2) {
+						System.out.println("Aktivacija u izradi...");
+					} else if (opcija == 3) {
+						System.out.println("Pretraga aktivnih dogadjaja u izradi...");
+					} else if (opcija == 4) {
+						System.out.println("Prikaz kupljenih karata u izradi...");
+					} else if (opcija == 5) {
+						kf.odjava();
+					}
+				}
+			} else if (izbor.equalsIgnoreCase("Izlaz")) {
+				System.out.println("Napustili ste aplikaciju.");
+				break;
+			}
+		}		
+
+	}
+
+}
