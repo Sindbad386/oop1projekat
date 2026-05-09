@@ -1,0 +1,40 @@
+package funkcionalnosti;
+
+import java.util.HashMap;
+import karte.Karta;
+import dogadjaji.Dogadjaj;
+import korisnici.Korisnik;
+
+public class IDRegistry {
+
+    private static HashMap<String, Karta> karte = new HashMap<>();
+    private static HashMap<String, Dogadjaj> dogadjaji = new HashMap<>();
+    private static HashMap<String, Korisnik> korisnici = new HashMap<>();
+
+    // 🔹 KARTA
+    public static void addKarta(Karta k) {
+        karte.put(k.getId(), k);
+    }
+
+    public static Karta getKarta(String id) {
+        return karte.get(id);
+    }
+
+    // 🔹 DOGADJAJ
+    public static void addDogadjaj(Dogadjaj d) {
+        dogadjaji.put(d.getId(), d);
+    }
+
+    public static Dogadjaj getDogadjaj(String id) {
+        return dogadjaji.get(id);
+    }
+
+    // 🔹 KORISNIK
+    public static void addKorisnik(Korisnik k) {
+        korisnici.put(k.getKorisnickoIme(), k);
+    }
+
+    public static Korisnik getKorisnik(String username) {
+        return korisnici.get(username);
+    }
+}
