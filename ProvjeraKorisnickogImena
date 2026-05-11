@@ -1,0 +1,13 @@
+ public boolean postojiKorisnickoIme(String korisnickoIme){
+        for (Profesor p : profesori.values()){
+            if (p.getKorisnickoIme().equalsIgnoreCase(korisnickoIme)){
+                return true;
+            }
+        }
+        for (Student s : studenti.values()){
+            if (s.getKorisnickoIme().equalsIgnoreCase(korisnickoIme)){
+                return true;
+            }
+        }
+        return false;
+    }
