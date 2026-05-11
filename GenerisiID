@@ -1,0 +1,9 @@
+ private static String generisiId() {
+
+        Random random = new Random();
+
+        char slovo = (char) ('A' + random.nextInt(26));
+        int broj = random.nextInt(10);
+
+        return "PROF-" + slovo + broj;
+    }
