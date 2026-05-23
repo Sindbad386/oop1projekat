@@ -1,0 +1,25 @@
+public void pretragaAktivnihDogadjaja(String mjesto) {
+		LocalDate danas = LocalDate.now();
+		
+		System.out.println("=== Aktivni dogadjaji za mjesto: " + mjesto + " ===");
+		boolean pronadjen = false;
+		
+		for (Dogadjaj d : registar.getDogadjaji().values()) {
+			boolean istoMjesto = d.getMjesto().getNaziv().equalsIgnoreCase(mjesto);
+			boolean buducnost = !d.getDatumPocetka().isBefore(danas);
+			if (istoMjesto && buducnost) {
+				 System.out.println(
+						 "ID: " + d.getId() +
+			             " | Naziv: " + d.getNaziv() +
+			             " | Mjesto: " + d.getMjesto().getNaziv() +
+			             " | Adresa: " + d.getMjesto().getAdresa() +
+			             " | Pocetak: " + d.getDatumPocetka() +
+			             " | Kraj: " + d.getDatumKraja()
+			          );
+				 pronadjen = true;
+			}
+		}
+		if (!pronadjen) {
+	        System.out.println("Nema dogadjaja za uneseno mjesto.");
+	    }
+	}
